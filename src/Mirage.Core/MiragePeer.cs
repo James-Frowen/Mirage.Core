@@ -55,8 +55,9 @@ namespace Mirage
             //var dataHandler = new DataHandler(MessageHandler);
             MetricsSettings.Metrics = MetricsSettings.Enabled ? new Metrics(MetricsSettings.Size) : null;
 
-            var config = PeerConfig ?? new Config();
+            Time = new NetworkTime();
 
+            var config = PeerConfig ?? new Config();
             NetworkWriterPool.Configure(maxPacketSize);
 
             Peer = new Peer(socket, maxPacketSize, dataHandler, config, LogFactory.GetLogger<Peer>(), MetricsSettings.Metrics);

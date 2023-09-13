@@ -29,8 +29,6 @@ namespace Mirage
             logger.Assert(_connections.Count == 0, "Connections should have been reset since previous session");
 
             Start(socket, maxPacketSize, mb => new DataHandler(MessageHandler, _connections));
-
-            MessageHandler = new MessageHandler(null, DisconnectOnException, RethrowException);
             MessageHandler.RegisterHandler<NetworkPingMessage>(Time.OnServerPing);
 
             Peer.Bind(endPoint);

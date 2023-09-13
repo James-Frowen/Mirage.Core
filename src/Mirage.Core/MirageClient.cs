@@ -20,7 +20,7 @@ namespace Mirage
         {
         }
 
-        public AddLateEvent<INetworkPlayer> _connected;
+        private readonly AddLateEvent<INetworkPlayer> _connected = new AddLateEvent<INetworkPlayer>();
         public IAddLateEvent<INetworkPlayer> Connected => _connected;
         public event Action<ClientStoppedReason> Disconnected;
 
@@ -50,7 +50,6 @@ namespace Mirage
             Player = new NetworkPlayer(connection, false);
             dataHandler.SetConnection(connection, Player);
 
-            Time = new NetworkTime();
             MessageHandler.RegisterHandler<NetworkPongMessage>(Time.OnClientPong);
 
             _started.Invoke();
