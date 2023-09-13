@@ -16,13 +16,14 @@ namespace Mirage.Logging
         /// logHandler used for new loggers
         /// </summary>
         private static Func<string, ILogHandler> createLoggerForType = _ => Debug.unityLogger;
+        private static LogType DefaultLogLevel = LogType.Warning;
 
-        public static ILogger GetLogger<T>(LogType defaultLogLevel = LogType.Warning)
+        public static ILogger GetLogger<T>(LogType? defaultLogLevel = default)
         {
             return GetLogger(typeof(T), defaultLogLevel);
         }
 
-        public static ILogger GetLogger(System.Type type, LogType defaultLogLevel = LogType.Warning)
+        public static ILogger GetLogger(System.Type type, LogType? defaultLogLevel = default)
         {
             // Full name for generic type is messy, instead
             if (type.IsGenericType && !type.IsGenericTypeDefinition)
@@ -39,7 +40,7 @@ namespace Mirage.Logging
             }
         }
 
-        public static ILogger GetLogger(string loggerName, LogType defaultLogLevel = LogType.Warning)
+        public static ILogger GetLogger(string loggerName, LogType? defaultLogLevel = default)
         {
             if (_loggers.TryGetValue(loggerName, out var logger))
             {
@@ -49,12 +50,12 @@ namespace Mirage.Logging
             return CreateNewLogger(loggerName, defaultLogLevel);
         }
 
-        private static ILogger CreateNewLogger(string loggerName, LogType defaultLogLevel)
+        private static ILogger CreateNewLogger(string loggerName, LogType? defaultLogLevel = default)
         {
             var logger = new Logger(createLoggerForType.Invoke(loggerName))
             {
                 // by default, log warnings and up
-                filterLogType = defaultLogLevel
+                filterLogType = defaultLogLevel ?? DefaultLogLevel
             };
 
             _loggers[loggerName] = logger;
@@ -68,6 +69,25 @@ namespace Mirage.Logging
         public static void ReplaceLogHandler(ILogHandler logHandler, bool replaceExisting = true)
         {
             ReplaceLogHandler(_ => logHandler, replaceExisting);
+        }
+
+        /// <summary>
+        /// Replacing log handlers for loggers, with the option to replace for exisitng or just new loggers
+        /// </summary>
+        /// <param name="logHandler"></param>
+        public static void SetDefaultLogLevel(LogType type, bool replaceExisting = true)
+        {
+            DefaultLogLevel = type;
+
+            if (replaceExisting)
+            {
+                foreach (var kvp in _loggers)
+                {
+                    var logger = kvp.Value;
+                    var key = kvp.Key;
+                    logger.filterLogType = type;
+                }
+            }
         }
 
         /// <summary>
