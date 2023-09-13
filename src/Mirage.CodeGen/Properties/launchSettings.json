@@ -1,0 +1,9 @@
+{
+  "profiles": {
+    "Mirage.CodeGen": {
+      "commandName": "Project",
+      "commandLineArgs": "$(SolutionDir)/src/Mirage.Core/bin/Debug/net6.0/Mirage.Core.dll",
+      "workingDirectory": "$(SolutionDir)"
+    }
+  }
+}
