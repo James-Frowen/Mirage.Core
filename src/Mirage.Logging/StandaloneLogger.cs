@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 namespace Mirage.Logging
 {
@@ -29,22 +29,22 @@ namespace Mirage.Logging
 
         public void Log(LogType type, object message)
         {
-            logHandler.LogFormat(type, null, message.ToString());
+            logHandler.LogFormat(type, message.ToString());
         }
 
         public void Log(object message)
         {
-            logHandler.LogFormat(LogType.Log, null, message.ToString());
+            logHandler.LogFormat(LogType.Log, message.ToString());
         }
 
         public void LogWarning(object message)
         {
-            logHandler.LogFormat(LogType.Warning, null, message.ToString());
+            logHandler.LogFormat(LogType.Warning, message.ToString());
         }
 
         public void LogError(object message)
         {
-            logHandler.LogFormat(LogType.Error, null, message.ToString());
+            logHandler.LogFormat(LogType.Error, message.ToString());
         }
 
         public void LogException(Exception ex)
