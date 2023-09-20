@@ -1,7 +1,16 @@
 # Mirage.Core
 
-pure c# version of mirage
+Pure c# version of [Mirage](https://github.com/MirageNet/Mirage)
 
+## Features
+
+This libray has a sub-set of the feature of Mirage, it does not contain any of the object management stuff that are useful for game engines like Unity or Godot
+
+- Reliable/Unreliable Udp transport
+    - support for alternative transports like websockets
+- Network message
+- Automatic serialization
+- BitPacking
 
 ## Run CodeGen
 
