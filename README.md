@@ -1,6 +1,13 @@
-# Mirage.Core
+# Mirage.Core (experimental, unlikely to get suppport)
 
 Pure c# version of [Mirage](https://github.com/MirageNet/Mirage)
+
+## Mirage.Core vs MirageStandalone
+
+- [MirageStandalone](https://github.com/MirageNet/MirageStandalone) is the full unity version made to run in dotnet core without unity, it is the same codebase as Mirage with an extra csproj that contain fake versions of unity's function so that it will compile outside of unity
+- [Mirage.Core](https://github.com/James-Frowen/Mirage.Core) (this repo) is a stripped down version of Mirage without any of the objectives features that depend on unity or other game engine.
+
+This is currently experimental, but later on may be used as a base library for unity, standalone, and godot versions to use.
 
 ## Features
 
