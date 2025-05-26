@@ -19,6 +19,10 @@ This libray has a sub-set of the feature of Mirage, it does not contain any of t
 - Automatic serialization
 - BitPacking
 
+## Install
+
+Requires installation of .NET 8: https://dotnet.microsoft.com/en-us/download/dotnet/8.0
+
 ## Run CodeGen
 
 1) compile Mirage.CodeGen.exe
