@@ -12,6 +12,12 @@ namespace Mirage.Test
             _server = StartUDPServer(7777);
         }
 
+        [TearDown]
+        public void TearDown()
+        {
+            _server.Stop();
+        }
+
         [Test]
         public void ServeActiveTest()
         {
