@@ -9,7 +9,7 @@ namespace Mirage
 {
     public sealed class MirageServer : MiragePeer
     {
-        private static readonly ILogger logger = LogFactory.GetLogger(typeof(MirageServer));
+        private static readonly ILogger logger = LogFactory.GetLogger(typeof(MirageServer), LogType.Log);
 
         public MirageServer(bool disconnectOnException = true, bool rethrowException = false, Config peerConfig = null, MetricSettings metric = null) : base(disconnectOnException, rethrowException, peerConfig, metric)
         {
