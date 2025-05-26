@@ -14,7 +14,7 @@ public class Program
             var server = StartUDPServer(7777);
             await RunUpdates(server, () => { }, 60);
         }
-        if (args[0] == "-client")
+        if (args[1] == "-client")
         {
             var client = StartUDPClient("localhost", 7777);
             await RunUpdates(client, () => { }, 60);
