@@ -14,7 +14,7 @@ namespace Mirage
 
     public sealed class MirageClient : MiragePeer
     {
-        private static readonly ILogger logger = LogFactory.GetLogger(typeof(MirageClient));
+        private static readonly ILogger logger = LogFactory.GetLogger(typeof(MirageClient), LogType.Log);
 
         public MirageClient(bool disconnectOnException = true, bool rethrowException = false, Config peerConfig = null, MetricSettings metric = null) : base(disconnectOnException, rethrowException, peerConfig, metric)
         {
