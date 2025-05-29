@@ -9,16 +9,22 @@ public class Program
 {
     public static async Task Main(string[] args)
     {
+        Task server_task = Task.CompletedTask;
+
         if (args[0] == "-server")
         {
             var server = StartUDPServer(7777);
-            await RunUpdates(server, () => { }, 60);
+            server_task = RunUpdates(server, () => { }, 60);
         }
+
+        Task client_task = Task.CompletedTask;
         if (args[1] == "-client")
         {
             var client = StartUDPClient("localhost", 7777);
-            await RunUpdates(client, () => { }, 60);
+            client_task = RunUpdates(client, () => { }, 60);
         }
+
+        await Task.WhenAll(server_task, client_task);
     }
 
     public static MirageServer StartUDPServer(int port)
