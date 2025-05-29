@@ -28,10 +28,10 @@ Requires installation of .NET 8: https://dotnet.microsoft.com/en-us/download/dot
 1) compile Mirage.CodeGen.exe
 2) run codegen
 ```sh
-./src/Mirage.CodeGen/bin/Debug/net6.0/Mirage.CodeGen.exe "<target dll>"
+./src/Mirage.CodeGen/bin/Debug/net8.0/Mirage.CodeGen.exe "<target dll>"
 ```
 
 example 
 ```sh
-./src/Mirage.CodeGen/bin/Debug/net6.0/Mirage.CodeGen.exe "./src/Mirage.Core/bin/Debug/net6.0/Mirage.Core.dll"
+./src/Mirage.CodeGen/bin/Debug/net8.0/Mirage.CodeGen.exe "./src/Mirage.Core/bin/Debug/net8.0/Mirage.Core.dll"
 ```
