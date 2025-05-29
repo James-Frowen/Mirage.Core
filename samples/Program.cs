@@ -9,22 +9,52 @@ public class Program
 {
     public static async Task Main(string[] args)
     {
-        Task server_task = Task.CompletedTask;
+        var server_task = Task.CompletedTask;
+        MirageServer server = null;
+        MirageClient client = null;
 
         if (args[0] == "-server")
         {
-            var server = StartUDPServer(7777);
+            server = StartUDPServer(7777);
             server_task = RunUpdates(server, () => { }, 60);
         }
 
-        Task client_task = Task.CompletedTask;
+        var client_task = Task.CompletedTask;
         if (args[1] == "-client")
         {
-            var client = StartUDPClient("localhost", 7777);
+            client = StartUDPClient("localhost", 7777);
             client_task = RunUpdates(client, () => { }, 60);
         }
 
+        if (server != null && client != null)
+            await SendDebugEcho(server, client);
+
         await Task.WhenAll(server_task, client_task);
+    }
+
+    [NetworkMessage]
+    public struct DebugEcho
+    {
+        public int n;
+    }
+    private static async Task SendDebugEcho(MirageServer server, MirageClient client)
+    {
+        server.MessageHandler.RegisterHandler<DebugEcho>((p, msg) =>
+        {
+            p.Send(msg);
+        });
+
+        client.MessageHandler.RegisterHandler<DebugEcho>((p, msg) =>
+        {
+            Console.WriteLine($"Echo received {msg.n}");
+        });
+
+        for (var i = 0; i < 100; i++)
+        {
+            Console.WriteLine($"Echo Sent {i}");
+            client.Player.Send(new DebugEcho { n = i });
+            await Task.Delay(1000);
+        }
     }
 
     public static MirageServer StartUDPServer(int port)
