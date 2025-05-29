@@ -11,4 +11,13 @@
     <ProjectReference Include="..\src\Mirage.SocketLayer\Mirage.SocketLayer.csproj" />
   </ItemGroup>
 
+  <PropertyGroup>
+    <MirageCodeGenExePath>$(SolutionDir)src\Mirage.CodeGen\bin\$(Configuration)\net8.0\Mirage.CodeGen.exe</MirageCodeGenExePath>
+  </PropertyGroup>
+
+  <Target Name="RunMirageCodeGen" AfterTargets="PostBuildEvent">
+    <Exec Command="for %%f in (&quot;$(TargetDir)*.dll&quot;) do &quot;$(MirageCodeGenExePath)&quot; &quot;%%f&quot;" />
+  </Target>
+
+
 </Project>
