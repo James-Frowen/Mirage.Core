@@ -9,9 +9,5 @@ namespace Mirage
         public DeserializeFailedException(string message) : base(message)
         {
         }
-
-        protected DeserializeFailedException(SerializationInfo info, StreamingContext context) : base(info, context)
-        {
-        }
     }
 }
