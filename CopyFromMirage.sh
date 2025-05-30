@@ -1,6 +1,6 @@
 if [ -z "$1" ]; then
-  echo "Error: Please provide the path to Mirage as an arguemnt."
-  echo "Ex: bash ./CopyFromMirage.sh C:/repos/Mirage/"
+  echo "Usage: bash ./CopyFromMirage.sh /path/to/Mirage/"
+  echo "Ex: bash ./CopyFromMirage.sh ../Mirage/"
   exit 1
 else
   MiragePath=$1
