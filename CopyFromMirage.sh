@@ -119,9 +119,7 @@ echo
 echo "Applying Mirage.Test/SocketLayer changes..."
 CopyScripts "$MiragePath/Assets/Tests/SocketLayer" "./src/Mirage.Tests/SocketLayer"
 CopyScripts "$MiragePath/Assets/Tests/SocketLayer/AckSystem" "./src/Mirage.Tests/SocketLayer/AckSystem"
-rm "./src/Mirage.Tests/SocketLayer/ConnectKeyValidatorTest.cs"
-rm "./src/Mirage.Tests/SocketLayer/PeerTestAsClient.cs"
-rm "./src/Mirage.Tests/SocketLayer/PeerTestBase.cs"
+
 
 ## Any of this relevant for Mirage > Mirage.Core Updates?
 # sed -i 's/"Unity\.Mirage\.CodeGen"/"Mirage.CodeGen"/g' ./Mirage/Runtime/AssemblyInfo.cs
