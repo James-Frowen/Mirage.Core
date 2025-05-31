@@ -7,7 +7,7 @@ namespace Mirage.SocketLayer
     /// Validates key that client sends in order to connect
     /// <para>This is a simple method that should be enough to stop random packets to the server creating connections</para>
     /// </summary>
-    internal class ConnectKeyValidator
+    public class ConnectKeyValidator
     {
         private readonly byte[] _key;
         public readonly int KeyLength;

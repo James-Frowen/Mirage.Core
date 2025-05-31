@@ -9,7 +9,7 @@ namespace Mirage.SocketLayer
     {
         float Now { get; }
     }
-    internal class Time : ITime
+    public class Time : ITime
     {
         private Stopwatch _stopwatch = Stopwatch.StartNew();
 
