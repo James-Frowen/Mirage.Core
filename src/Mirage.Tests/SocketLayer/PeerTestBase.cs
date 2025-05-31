@@ -27,7 +27,7 @@ namespace Mirage.SocketLayer.Tests.PeerTests
         protected ILogger logger => instance.logger;
         protected Peer peer => instance.peer;
 
-        //internal readonly Time time = new Time();
+        internal readonly Time time = new Time();
 
         [SetUp]
         public void SetUp()
