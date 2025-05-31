@@ -46,10 +46,11 @@ echo
 echo "Applying Mirage.Core/Sockets changes..."
 CopyScripts "$MiragePath/Assets/Mirage/Runtime/Sockets" "./src/Mirage.Core/Sockets"
 CopyScripts "$MiragePath/Assets/Mirage/Runtime/Sockets/Udp" "./src/Mirage.Core/Sockets/Udp"
-CopyScripts "$MiragePath/Assets/Mirage/Runtime/Sockets/Udp/NanoSockets" "./src/Mirage.Core/Sockets/Udp/NanoSockets"
-CopyScripts "$MiragePath/Assets/Mirage/Runtime/Sockets/Udp/NanoSockets/Plugins" "./src/Mirage.Core/Sockets/Udp/NanoSockets/Plugins"
-CopyScripts "$MiragePath/Assets/Mirage/Runtime/Sockets/Udp/NanoSockets/Scripts" "./src/Mirage.Core/Sockets/Udp/NanoSockets/Scripts"
-#TODO: loop recurse dirs and support more than just .cs
+rm "./src/Mirage.Core/Sockets/Udp/InitUDP.cs"
+rm "./src/Mirage.Core/Sockets/Udp/NanoEndPoint.cs"
+rm "./src/Mirage.Core/Sockets/Udp/NanoSocket_NotSupported.cs"
+rm "./src/Mirage.Core/Sockets/Udp/NanoSocket.cs"
+rm "./src/Mirage.Core/Sockets/Udp/NanoSocketException.cs"
 
 echo
 echo "Applying Mirage.Core/Utils changes..."
