@@ -58,6 +58,9 @@ CopyScripts "$MiragePath/Assets/Mirage/Runtime/Utils" "./src/Mirage.Core/Utils"
 echo
 echo "Applying Mirage.Logging changes..."
 CopyScripts "$MiragePath/Assets/Mirage/Runtime/Logging" "./src/Mirage.Logging"
+rm "./src/Mirage.Logging/EditorLogSettingsLoader.cs"
+rm "./src/Mirage.Logging/LogSettings.cs"
+rm "./src/Mirage.Logging/MirageLogHandler.cs"
 
 echo
 echo "Applying Mirage.SocketLayer changes..."
