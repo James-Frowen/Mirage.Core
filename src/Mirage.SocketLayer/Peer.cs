@@ -62,6 +62,7 @@ namespace Mirage.SocketLayer
         /// is server listening on or connected to endpoint
         /// </summary>
         private bool _active;
+        public PoolMetrics PoolMetrics => _bufferPool.Metrics;
 
         public Peer(ISocket socket, int maxPacketSize, IDataHandler dataHandler, Config config = null, ILogger logger = null, Metrics metrics = null)
         {
@@ -368,7 +369,7 @@ namespace Mirage.SocketLayer
             {
                 RejectConnectionWithReason(endPoint, RejectReason.ServerFull);
             }
-            else if (!_connectKeyValidator.Validate(packet.Buffer.array))
+            else if (!_connectKeyValidator.Validate(packet.Buffer.array, packet.Length))
             {
                 RejectConnectionWithReason(endPoint, RejectReason.KeyInvalid);
             }
@@ -565,6 +566,9 @@ namespace Mirage.SocketLayer
             {
                 var removed = _connections.Remove(connection.EndPoint);
                 connection.State = ConnectionState.Destroyed;
+
+                if (connection is IDisposable disposable)
+                    disposable.Dispose();
 
                 // value should be removed from dictionary
                 if (!removed)

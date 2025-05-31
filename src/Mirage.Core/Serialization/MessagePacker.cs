@@ -86,7 +86,7 @@ namespace Mirage.Serialization
             // this works because value types cannot be derived
             // if it is a reference type (for example IMessageBase),
             // ask the message for the real type
-            var id = default(T) == null && message != null
+            var id = default(T) == null && message != null 
                 // for class we need to use GetType incase T is base class
                 ? GetId(message.GetType())
                 // for struct, we can use the cached Id

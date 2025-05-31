@@ -13,6 +13,11 @@ namespace Mirage.SocketLayer
         {
             return _comparer.Equals(value, default);
         }
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private bool NotDefault(T value)
+        {
+            return !_comparer.Equals(value, default);
+        }
 
         private readonly T[] _buffer;
 
@@ -33,6 +38,8 @@ namespace Mirage.SocketLayer
         /// <para>NOTE: this is not distance from read to write</para>
         /// </summary>
         public int Count => _count;
+
+        public int Capacity => _buffer.Length;
 
         public T this[uint index]
         {
@@ -85,7 +92,7 @@ namespace Mirage.SocketLayer
         public bool TryPeak(out T item)
         {
             item = _buffer[_read];
-            return !IsDefault(item);
+            return NotDefault(item);
         }
 
         /// <summary>
@@ -97,7 +104,7 @@ namespace Mirage.SocketLayer
         public bool Exists(uint index)
         {
             var inBounds = (uint)Sequencer.MoveInBounds(index);
-            return !IsDefault(_buffer[inBounds]);
+            return NotDefault(_buffer[inBounds]);
         }
 
         /// <summary>
@@ -131,10 +138,9 @@ namespace Mirage.SocketLayer
         public bool TryDequeue(out T item)
         {
             item = _buffer[_read];
-            if (!IsDefault(item))
+            if (NotDefault(item))
             {
                 RemoveNext();
-
                 return true;
             }
             else
@@ -177,6 +183,22 @@ namespace Mirage.SocketLayer
         public void MoveReadOne()
         {
             _read = (uint)Sequencer.NextAfter(_read);
+        }
+
+        public void ClearAndRelease(Action<T> releaseItem)
+        {
+            while (_count > 0)
+            {
+                MoveReadToNextNonEmpty();
+                // peak
+                var packet = _buffer[_read];
+
+                // note: releaseItem might remove the item, so do not change count until it has been called
+                releaseItem?.Invoke(packet);
+
+                if (NotDefault(_buffer[_read]))
+                    RemoveNext();
+            }
         }
     }
 }

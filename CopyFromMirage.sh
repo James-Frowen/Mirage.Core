@@ -22,34 +22,39 @@ CopyScripts () {
     find $1/*.cs | xargs cp -vt $2
 }
 
-echo
-echo "Applying Mirage.Core changes..."
-CopyScripts "$MiragePath/Assets/Mirage/Runtime" "./src/Mirage.Core"
-
-# Directories not currently included in Runtime Copy. Need to patch them out of unity?
-#CopyScripts "$MiragePath/Assets/Mirage/Runtime/Authentication" "./src/Mirage.Core/Authentication"
-#CopyScripts "$MiragePath/Assets/Mirage/Runtime/Collections" "./src/Mirage.Core/Collections"
-#CopyScripts "$MiragePath/Assets/Mirage/Runtime/Extensions" "./src/Mirage.Core/Extensions"
-#CopyScripts "$MiragePath/Assets/Mirage/Runtime/RemoteCalls" "./src/Mirage.Core/RemoteCalls"
+# #echo
+# #echo "Applying Mirage.Core changes..."
+# # Directories not currently included in Runtime Copy. Need to patch them out of unity?
+# #CopyScripts "$MiragePath/Assets/Mirage/Runtime" "./src/Mirage.Core"
+# #CopyScripts "$MiragePath/Assets/Mirage/Runtime/Authentication" "./src/Mirage.Core/Authentication"
+# #CopyScripts "$MiragePath/Assets/Mirage/Runtime/Collections" "./src/Mirage.Core/Collections"
+# #CopyScripts "$MiragePath/Assets/Mirage/Runtime/Extensions" "./src/Mirage.Core/Extensions"
+# #CopyScripts "$MiragePath/Assets/Mirage/Runtime/RemoteCalls" "./src/Mirage.Core/RemoteCalls"
 
 echo
 echo "Applying Mirage.Core/Events changes..."
 CopyScripts "$MiragePath/Assets/Mirage/Runtime/Events" "./src/Mirage.Core/Events"
+rm "./src/Mirage.Core/Events/AddLateEvent_new.cs"
+rm "./src/Mirage.Core/Events/BoolAddLateEvent.cs"
+rm "./src/Mirage.Core/Events/DisconnectAddLateEvent.cs"
+rm "./src/Mirage.Core/Events/NetworkPlayerAddLateEvent.cs"
 
 echo
 echo "Applying Mirage.Core/Serialization changes..."
 CopyScripts "$MiragePath/Assets/Mirage/Runtime/Serialization" "./src/Mirage.Core/Serialization"
-# WHICH FILES SHOULD BE REMOVED FROM PATCHING???
-# rm "./src/Mirage.Core/Serialization/CompressedExtensions.cs"
+rm "./src/Mirage.Core/Serialization/CompressedExtensions.cs"
+rm "./src/Mirage.Core/Serialization/MirageTypesExtensions.cs"
+rm "./src/Mirage.Core/Serialization/UnityTypesExtensions.cs"
 
 echo
 echo "Applying Mirage.Core/Sockets changes..."
 CopyScripts "$MiragePath/Assets/Mirage/Runtime/Sockets" "./src/Mirage.Core/Sockets"
 CopyScripts "$MiragePath/Assets/Mirage/Runtime/Sockets/Udp" "./src/Mirage.Core/Sockets/Udp"
-CopyScripts "$MiragePath/Assets/Mirage/Runtime/Sockets/Udp/NanoSockets" "./src/Mirage.Core/Sockets/Udp/NanoSockets"
-CopyScripts "$MiragePath/Assets/Mirage/Runtime/Sockets/Udp/NanoSockets/Plugins" "./src/Mirage.Core/Sockets/Udp/NanoSockets/Plugins"
-CopyScripts "$MiragePath/Assets/Mirage/Runtime/Sockets/Udp/NanoSockets/Scripts" "./src/Mirage.Core/Sockets/Udp/NanoSockets/Scripts"
-#TODO: loop recurse dirs and support more than just .cs
+rm "./src/Mirage.Core/Sockets/Udp/InitUDP.cs"
+rm "./src/Mirage.Core/Sockets/Udp/NanoEndPoint.cs"
+rm "./src/Mirage.Core/Sockets/Udp/NanoSocket_NotSupported.cs"
+rm "./src/Mirage.Core/Sockets/Udp/NanoSocket.cs"
+rm "./src/Mirage.Core/Sockets/Udp/NanoSocketException.cs"
 
 echo
 echo "Applying Mirage.Core/Utils changes..."
@@ -58,6 +63,9 @@ CopyScripts "$MiragePath/Assets/Mirage/Runtime/Utils" "./src/Mirage.Core/Utils"
 echo
 echo "Applying Mirage.Logging changes..."
 CopyScripts "$MiragePath/Assets/Mirage/Runtime/Logging" "./src/Mirage.Logging"
+rm "./src/Mirage.Logging/EditorLogSettingsLoader.cs"
+rm "./src/Mirage.Logging/LogSettings.cs"
+rm "./src/Mirage.Logging/MirageLogHandler.cs"
 
 echo
 echo "Applying Mirage.SocketLayer changes..."
@@ -75,6 +83,21 @@ CopyScripts "$MiragePath/Assets/Mirage/Weaver/Mirage.CecilExtensions" "./src/Mir
 CopyScripts "$MiragePath/Assets/Mirage/Weaver/Mirage.CecilExtensions/Extensions" "./src/Mirage.CodeGen/Mirage.CecilExtensions/Extensions"
 CopyScripts "$MiragePath/Assets/Mirage/Weaver/Mirage.CecilExtensions/Logging" "./src/Mirage.CodeGen/Mirage.CecilExtensions/Logging"
 CopyScripts "$MiragePath/Assets/Mirage/Weaver/Mirage.CecilExtensions/UnityCodeGen" "./src/Mirage.CodeGen/Mirage.CecilExtensions/UnityCodeGen"
+rm "./src/Mirage.CodeGen/Weaver/MirageILPostProcessor.cs"
+rm "./src/Mirage.CodeGen/Weaver/Processors/AttributeProcessor.cs"
+rm "./src/Mirage.CodeGen/Mirage.CecilExtensions/AssemblyInfo.cs"
+rm "./src/Mirage.CodeGen/Weaver/Processors/ClientRpcProcessor.cs"
+rm "./src/Mirage.CodeGen/Weaver/Processors/NetworkBehaviourProcessor.cs"
+rm "./src/Mirage.CodeGen/Weaver/Processors/RegisterRpc.cs"
+rm "./src/Mirage.CodeGen/Weaver/Processors/RpcMethod.cs"
+rm "./src/Mirage.CodeGen/Weaver/Processors/RpcProcessor.cs"
+rm "./src/Mirage.CodeGen/Weaver/Processors/ServerRpcProcessor.cs"
+rm "./src/Mirage.CodeGen/Weaver/Processors/SyncObjectProcessor.cs"
+rm "./src/Mirage.CodeGen/Weaver/Processors/SyncVarProcessor.cs"
+rm "./src/Mirage.CodeGen/Weaver/Serialization/QuaternionFinder.cs"
+rm "./src/Mirage.CodeGen/Weaver/Serialization/Vector2Finder.cs"
+rm "./src/Mirage.CodeGen/Weaver/Serialization/Vector3Finder.cs"
+
 
 
 ## Any of this relevant for Mirage > Mirage.Core Updates?

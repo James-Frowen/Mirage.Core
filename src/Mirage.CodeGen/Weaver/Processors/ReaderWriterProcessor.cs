@@ -328,7 +328,7 @@ namespace Mirage.Weaver
         public void InitializeReaderAndWriters()
         {
             var rwInitializer = module.GeneratedClass().AddMethod(
-                GeneratedCode.INIT_METHOD,
+                "InitReadWriters",
                 Mono.Cecil.MethodAttributes.Public | Mono.Cecil.MethodAttributes.Static);
 
             var worker = rwInitializer.Body.GetILProcessor();

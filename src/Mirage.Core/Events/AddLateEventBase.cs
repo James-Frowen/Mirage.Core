@@ -2,7 +2,7 @@ namespace Mirage.Events
 {
     public abstract class AddLateEventBase
     {
-        protected bool HasInvoked { get; private set; }
+        protected bool HasInvoked;
 
         protected void MarkInvoked()
         {
