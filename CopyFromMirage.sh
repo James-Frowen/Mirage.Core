@@ -43,8 +43,9 @@ rm "./src/Mirage.Core/Events/NetworkPlayerAddLateEvent.cs"
 echo
 echo "Applying Mirage.Core/Serialization changes..."
 CopyScripts "$MiragePath/Assets/Mirage/Runtime/Serialization" "./src/Mirage.Core/Serialization"
-# WHICH FILES SHOULD BE REMOVED FROM PATCHING???
-# rm "./src/Mirage.Core/Serialization/CompressedExtensions.cs"
+rm "./src/Mirage.Core/Serialization/CompressedExtensions.cs"
+rm "./src/Mirage.Core/Serialization/MirageTypesExtensions.cs"
+rm "./src/Mirage.Core/Serialization/UnityTypesExtensions.cs"
 
 echo
 echo "Applying Mirage.Core/Sockets changes..."
