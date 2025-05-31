@@ -104,19 +104,6 @@ namespace Mirage.Serialization
             }
         }
 
-#if UNITY_2021_3_OR_NEWER
-        [WeaverSerializeCollection]
-        public static void WriteSpan<T>(this NetworkWriter writer, Span<T> span) => WriteReadOnlySpan<T>(writer, span);
-        [WeaverSerializeCollection]
-        public static void WriteReadOnlySpan<T>(this NetworkWriter writer, ReadOnlySpan<T> span)
-        {
-            var length = span.Length;
-            writer.WritePackedUInt32(checked((uint)length));
-            for (var i = 0; i < length; i++)
-                writer.Write(span[i]);
-        }
-#endif
-
         /// <returns>array or null</returns>
         public static byte[] ReadBytesAndSize(this NetworkReader reader)
         {
