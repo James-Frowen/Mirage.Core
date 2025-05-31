@@ -22,15 +22,14 @@ CopyScripts () {
     find $1/*.cs | xargs cp -vt $2
 }
 
-echo
-echo "Applying Mirage.Core changes..."
-CopyScripts "$MiragePath/Assets/Mirage/Runtime" "./src/Mirage.Core"
-
-# Directories not currently included in Runtime Copy. Need to patch them out of unity?
-#CopyScripts "$MiragePath/Assets/Mirage/Runtime/Authentication" "./src/Mirage.Core/Authentication"
-#CopyScripts "$MiragePath/Assets/Mirage/Runtime/Collections" "./src/Mirage.Core/Collections"
-#CopyScripts "$MiragePath/Assets/Mirage/Runtime/Extensions" "./src/Mirage.Core/Extensions"
-#CopyScripts "$MiragePath/Assets/Mirage/Runtime/RemoteCalls" "./src/Mirage.Core/RemoteCalls"
+# #echo
+# #echo "Applying Mirage.Core changes..."
+# # Directories not currently included in Runtime Copy. Need to patch them out of unity?
+# #CopyScripts "$MiragePath/Assets/Mirage/Runtime" "./src/Mirage.Core"
+# #CopyScripts "$MiragePath/Assets/Mirage/Runtime/Authentication" "./src/Mirage.Core/Authentication"
+# #CopyScripts "$MiragePath/Assets/Mirage/Runtime/Collections" "./src/Mirage.Core/Collections"
+# #CopyScripts "$MiragePath/Assets/Mirage/Runtime/Extensions" "./src/Mirage.Core/Extensions"
+# #CopyScripts "$MiragePath/Assets/Mirage/Runtime/RemoteCalls" "./src/Mirage.Core/RemoteCalls"
 
 echo
 echo "Applying Mirage.Core/Events changes..."
