@@ -75,7 +75,7 @@ CopyScripts "$MiragePath/Assets/Mirage/Runtime/SocketLayer/ConnectionTrackers" "
 CopyScripts "$MiragePath/Assets/Mirage/Runtime/SocketLayer/Enums" "./src/Mirage.SocketLayer/Enums"
 
 echo
-echo "Applying Mirage.CodeGen\Weaver changes..."
+echo "Applying Mirage.CodeGen/Weaver changes..."
 CopyScripts "$MiragePath/Assets/Mirage/Weaver" "./src/Mirage.CodeGen/Weaver"
 CopyScripts "$MiragePath/Assets/Mirage/Weaver/Processors" "./src/Mirage.CodeGen/Weaver/Processors"
 CopyScripts "$MiragePath/Assets/Mirage/Weaver/Serialization" "./src/Mirage.CodeGen/Weaver/Serialization"
@@ -98,7 +98,22 @@ rm "./src/Mirage.CodeGen/Weaver/Serialization/QuaternionFinder.cs"
 rm "./src/Mirage.CodeGen/Weaver/Serialization/Vector2Finder.cs"
 rm "./src/Mirage.CodeGen/Weaver/Serialization/Vector3Finder.cs"
 
-
+echo
+echo "Applying Mirage.Test/Common changes..."
+CopyScripts "$MiragePath/Assets/Tests/Common" "./src/Mirage.Tests/Common"
+## CopyScripts "$MiragePath/Assets/Tests/Common/Setup" "./src/Mirage.Tests/Common/Setup"
+## CopyScripts "$MiragePath/Assets/Tests/Common/Setup/Instances" "./src/Mirage.Tests/Common/Setup/Instances"
+rm "./src/Mirage.Tests/Common/AsyncUtil.cs"
+rm "./src/Mirage.Tests/Common/BuildReleaseTestPlayer.cs"
+rm "./src/Mirage.Tests/Common/EmptyBehaviour.cs"
+rm "./src/Mirage.Tests/Common/LocalConnections.cs"
+rm "./src/Mirage.Tests/Common/LogErrorChecker.cs"
+rm "./src/Mirage.Tests/Common/MockRpcComponent.cs"
+rm "./src/Mirage.Tests/Common/MockVisibility.cs"
+rm "./src/Mirage.Tests/Common/PlayerWithTestsCallbacks.cs"
+rm "./src/Mirage.Tests/Common/SyncObjectHelper.cs"
+rm "./src/Mirage.Tests/Common/TestExtensions.cs"
+rm "./src/Mirage.Tests/Common/UnityEventUtis.cs"
 
 ## Any of this relevant for Mirage > Mirage.Core Updates?
 # sed -i 's/"Unity\.Mirage\.CodeGen"/"Mirage.CodeGen"/g' ./Mirage/Runtime/AssemblyInfo.cs
