@@ -192,24 +192,6 @@ namespace Mirage.Serialization
             return result;
         }
 
-#if UNITY_2021_3_OR_NEWER
-        [WeaverSerializeCollection]
-        public static Span<T> ReadSpan<T>(this NetworkReader reader)
-        {
-            var length = checked((int)reader.ReadPackedUInt32());
-            ValidateSize(reader, length);
-
-            var result = new T[length]; // todo remove allocation
-            for (var i = 0; i < length; i++)
-            {
-                result[i] = reader.Read<T>();
-            }
-            return result;
-        }
-        [WeaverSerializeCollection]
-        public static ReadOnlySpan<T> ReadReadOnlySpan<T>(this NetworkReader reader) => ReadSpan<T>(reader);
-#endif
-
         /// <summary>Writes null as 0, and all over values as +1</summary>
         /// <param name="count">The real count or null if collection is is null</param>
         internal static void WriteCountPlusOne(NetworkWriter writer, int? count)
