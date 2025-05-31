@@ -78,6 +78,21 @@ CopyScripts "$MiragePath/Assets/Mirage/Weaver/Mirage.CecilExtensions" "./src/Mir
 CopyScripts "$MiragePath/Assets/Mirage/Weaver/Mirage.CecilExtensions/Extensions" "./src/Mirage.CodeGen/Mirage.CecilExtensions/Extensions"
 CopyScripts "$MiragePath/Assets/Mirage/Weaver/Mirage.CecilExtensions/Logging" "./src/Mirage.CodeGen/Mirage.CecilExtensions/Logging"
 CopyScripts "$MiragePath/Assets/Mirage/Weaver/Mirage.CecilExtensions/UnityCodeGen" "./src/Mirage.CodeGen/Mirage.CecilExtensions/UnityCodeGen"
+rm "./src/Mirage.CodeGen/Weaver/MirageILPostProcessor.cs"
+rm "./src/Mirage.CodeGen/Weaver/Processors/AttributeProcessor.cs"
+rm "./src/Mirage.CodeGen/Mirage.CecilExtensions/AssemblyInfo.cs"
+rm "./src/Mirage.CodeGen/Weaver/Processors/ClientRpcProcessor.cs"
+rm "./src/Mirage.CodeGen/Weaver/Processors/NetworkBehaviourProcessor.cs"
+rm "./src/Mirage.CodeGen/Weaver/Processors/RegisterRpc.cs"
+rm "./src/Mirage.CodeGen/Weaver/Processors/RpcMethod.cs"
+rm "./src/Mirage.CodeGen/Weaver/Processors/RpcProcessor.cs"
+rm "./src/Mirage.CodeGen/Weaver/Processors/ServerRpcProcessor.cs"
+rm "./src/Mirage.CodeGen/Weaver/Processors/SyncObjectProcessor.cs"
+rm "./src/Mirage.CodeGen/Weaver/Processors/SyncVarProcessor.cs"
+rm "./src/Mirage.CodeGen/Weaver/Serialization/QuaternionFinder.cs"
+rm "./src/Mirage.CodeGen/Weaver/Serialization/Vector2Finder.cs"
+rm "./src/Mirage.CodeGen/Weaver/Serialization/Vector3Finder.cs"
+
 
 
 ## Any of this relevant for Mirage > Mirage.Core Updates?

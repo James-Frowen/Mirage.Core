@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Linq.Expressions;
 using System.Reflection;
 using Mono.Cecil;
@@ -56,12 +56,12 @@ namespace Mirage.CodeGen
 
         public static TypeDefinition GeneratedClass(this ModuleDefinition module)
         {
-            var type = module.GetType(GeneratedCode.GENERATED_NAMEPACE, GeneratedCode.GENERATED_CLASS);
+            var type = module.GetType("Mirage", "GeneratedNetworkCode");
 
             if (type != null)
                 return type;
 
-            type = new TypeDefinition(GeneratedCode.GENERATED_NAMEPACE, GeneratedCode.GENERATED_CLASS,
+            type = new TypeDefinition("Mirage", "GeneratedNetworkCode",
                         TypeAttributes.BeforeFieldInit | TypeAttributes.Class | TypeAttributes.AnsiClass | TypeAttributes.Public | TypeAttributes.AutoClass | TypeAttributes.Abstract | TypeAttributes.Sealed,
                         module.ImportReference<object>());
             module.Types.Add(type);
