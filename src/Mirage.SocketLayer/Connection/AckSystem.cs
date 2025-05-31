@@ -4,7 +4,7 @@ using System.Runtime.CompilerServices;
 
 namespace Mirage.SocketLayer
 {
-    public class AckSystem
+    public class AckSystem : IDisposable
     {
         private const int MASK_SIZE = sizeof(ulong) * 8;
 
@@ -106,6 +106,34 @@ namespace Mirage.SocketLayer
 
             OnSend();
         }
+
+        public void Dispose()
+        {
+            var removeSafety = new HashSet<ByteBuffer>();
+
+            _sentAckablePackets.ClearAndRelease((packet) =>
+            {
+                var reliablePacket = packet.ReliablePacket;
+                if (reliablePacket != null)
+                {
+                    foreach (var seq in reliablePacket.Sequences)
+                        _sentAckablePackets.RemoveAt(seq);
+
+                    reliablePacket.Buffer.Release();
+
+                    removeSafety.Add(reliablePacket.Buffer);
+                }
+            });
+
+            _reliableReceive.ClearAndRelease((packet) =>
+            {
+                var buffer = packet.Buffer;
+
+                buffer.Release();
+                removeSafety.Add(buffer);
+            });
+        }
+
 
         /// <summary>
         /// Gets next Reliable packet in order, packet consists for multiple messsages
@@ -527,7 +555,7 @@ namespace Mirage.SocketLayer
                 // distance is too large to be shifted
                 if (distance >= MASK_SIZE)
                 {
-                    // this means 63 packets have gone missingg
+                    // this means 63 packets have gone missing
                     // this should never happen, but if it does then just set mask to 1
                     _ackMask = 1;
                 }
@@ -692,6 +720,11 @@ namespace Mirage.SocketLayer
             {
                 return Token == other.Token &&
                     ReliablePacket == other.ReliablePacket;
+            }
+
+            public bool IsValid()
+            {
+                return Token != null || ReliablePacket != null;
             }
 
             /// <summary>
