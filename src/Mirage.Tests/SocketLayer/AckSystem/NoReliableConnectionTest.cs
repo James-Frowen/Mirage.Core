@@ -36,7 +36,6 @@ namespace Mirage.SocketLayer.Tests.AckSystemTests
             _connection = _peerInstance.peer.Connect(Substitute.For<IEndPoint>());
             // Set connection state to Connected after creation
             ((NoReliableConnection)_connection).State = ConnectionState.Connected;
-
             _buffer = new byte[MAX_PACKET_SIZE - 1];
             for (var i = 0; i < _buffer.Length; i++)
             {
@@ -65,7 +64,6 @@ namespace Mirage.SocketLayer.Tests.AckSystemTests
         {
             // 3 byte header, so max size is over max
             var bigBuffer = new byte[MAX_PACKET_SIZE - 2];
-
             var exception = Assert.Throws<MessageSizeException>(() =>
             {
                 _connection.SendReliable(bigBuffer);

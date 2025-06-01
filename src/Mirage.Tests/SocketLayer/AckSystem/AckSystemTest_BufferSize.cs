@@ -64,6 +64,7 @@ namespace Mirage.SocketLayer.Tests.AckSystemTests
                 instance.ackSystem.SendReliable(createRandomData(0));
                 instance.ackSystem.Update();
             });
+
             var expected = new BufferFullException($"Sent queue is full for {instance.connection}");
             Assert.That(exception, Has.Message.EqualTo(expected.Message));
         }

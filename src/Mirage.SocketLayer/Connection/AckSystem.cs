@@ -119,7 +119,6 @@ namespace Mirage.SocketLayer
             _sentAckablePackets.ClearAndRelease((packet) =>
             {
                 Debug.Assert(packet.IsValid());
-
                 var reliablePacket = packet.ReliablePacket;
                 if (reliablePacket != null)
                 {
@@ -127,7 +126,6 @@ namespace Mirage.SocketLayer
                         _sentAckablePackets.RemoveAt(seq);
 
                     reliablePacket.Buffer.Release();
-
                     Debug.Assert(!removeSafety.Contains(reliablePacket.Buffer));
                     removeSafety.Add(reliablePacket.Buffer);
                 }
@@ -136,14 +134,14 @@ namespace Mirage.SocketLayer
             _reliableReceive.ClearAndRelease((packet) =>
             {
                 var buffer = packet.Buffer;
-                Debug.Assert(buffer != null);
 
+                Debug.Assert(buffer != null);
                 buffer.Release();
                 Debug.Assert(!removeSafety.Contains(buffer));
+
                 removeSafety.Add(buffer);
             });
         }
-
 
         /// <summary>
         /// Gets next Reliable packet in order, packet consists for multiple messages
