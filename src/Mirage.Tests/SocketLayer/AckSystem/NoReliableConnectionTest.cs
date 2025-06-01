@@ -201,31 +201,31 @@ namespace Mirage.SocketLayer.Tests.AckSystemTests
         }
 
 
-        //[Test]
-        //public void UnbatchesMessageOnReceive()
-        //{
-        //    var receive = _bufferPool.Take();
-        //    receive.array[0] = (byte)PacketType.Reliable;
-        //    var offset = 1;
-        //    AddMessage(receive.array, ref offset, 10);
-        //    AddMessage(receive.array, ref offset, 30);
-        //    AddMessage(receive.array, ref offset, 20);
+        [Test]
+        public void UnbatchesMessageOnReceive()
+        {
+            var receive = _bufferPool.Take();
+            receive.array[0] = (byte)PacketType.Reliable;
+            var offset = 1;
+            AddMessage(receive.array, ref offset, 10);
+            AddMessage(receive.array, ref offset, 30);
+            AddMessage(receive.array, ref offset, 20);
 
-        //    var segments = new List<ArraySegment<byte>>();
-        //    _peerInstance.dataHandler
-        //        .When(x => x.ReceiveMessage(_connection, Arg.Any<ArraySegment<byte>>()))
-        //        .Do(x => segments.Add(x.ArgAt<ArraySegment<byte>>(1)));
-        //    ((NoReliableConnection)_connection).ReceiveReliablePacket(new Packet(receive, offset));
-        //    _peerInstance.dataHandler.Received(3).ReceiveMessage(_connection, Arg.Any<ArraySegment<byte>>());
+            var segments = new List<ArraySegment<byte>>();
+            _peerInstance.dataHandler
+                .When(x => x.ReceiveMessage(_connection, Arg.Any<ArraySegment<byte>>()))
+                .Do(x => segments.Add(x.ArgAt<ArraySegment<byte>>(1)));
+            ((NoReliableConnection)_connection).ReceiveReliablePacket(new Packet(receive, offset));
+            _peerInstance.dataHandler.Received(3).ReceiveMessage(_connection, Arg.Any<ArraySegment<byte>>());
 
 
-        //    Assert.That(segments[0].Count, Is.EqualTo(10));
-        //    Assert.That(segments[1].Count, Is.EqualTo(30));
-        //    Assert.That(segments[2].Count, Is.EqualTo(20));
-        //    Assert.That(segments[0].SequenceEqual(new ArraySegment<byte>(_buffer, 0, 10)));
-        //    Assert.That(segments[1].SequenceEqual(new ArraySegment<byte>(_buffer, 0, 30)));
-        //    Assert.That(segments[2].SequenceEqual(new ArraySegment<byte>(_buffer, 0, 20)));
-        //}
+            Assert.That(segments[0].Count, Is.EqualTo(10));
+            Assert.That(segments[1].Count, Is.EqualTo(30));
+            Assert.That(segments[2].Count, Is.EqualTo(20));
+            Assert.That(segments[0].SequenceEqual(new ArraySegment<byte>(_buffer, 0, 10)));
+            Assert.That(segments[1].SequenceEqual(new ArraySegment<byte>(_buffer, 0, 30)));
+            Assert.That(segments[2].SequenceEqual(new ArraySegment<byte>(_buffer, 0, 20)));
+        }
 
         private void AddMessage(byte[] receive, ref int offset, int size)
         {

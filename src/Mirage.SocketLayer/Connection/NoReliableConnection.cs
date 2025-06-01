@@ -60,7 +60,7 @@ namespace Mirage.SocketLayer
             _metrics?.OnSendMessageReliable(length);
         }
 
-        internal override void ReceiveReliablePacket(Packet packet)
+        public override void ReceiveReliablePacket(Packet packet)
         {
             HandleReliableBatched(packet.Buffer.array, 1, packet.Length, PacketType.Reliable);
         }

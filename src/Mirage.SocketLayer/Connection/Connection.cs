@@ -218,7 +218,7 @@ namespace Mirage.SocketLayer
 
         internal abstract void ReceiveUnreliablePacket(Packet packet);
         internal abstract void ReceiveNotifyPacket(Packet packet);
-        internal abstract void ReceiveReliablePacket(Packet packet);
+        public abstract void ReceiveReliablePacket(Packet packet);
         internal abstract void ReceiveNotifyAck(Packet packet);
         internal abstract void ReceiveReliableFragment(Packet packet);
 

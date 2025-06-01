@@ -148,119 +148,123 @@ namespace Mirage.SocketLayer.Tests.PeerTests
             CheckServerReceived(message);
         }
 
-        //public IEnumerator ServerNotifySendMarkedAsReceived()
-        //{
-        //    var message = Enumerable.Range(10, 20).Select(x => (byte)x).ToArray();
+        [Test]
+        public IEnumerator ServerNotifySendMarkedAsReceived()
+        {
+            Time time = new Time();
+            var message = Enumerable.Range(10, 20).Select(x => (byte)x).ToArray();
+            var received = new Action[ClientCount];
+            var lost = new Action[ClientCount];
+            // send 1 message to each client
+            for (var i = 0; i < ClientCount; i++)
+            {
+                var token = serverConnections[i].SendNotify(message);
 
-        //    var received = new Action[ClientCount];
-        //    var lost = new Action[ClientCount];
-        //    // send 1 message to each client
-        //    for (var i = 0; i < ClientCount; i++)
-        //    {
-        //        var token = serverConnections[i].SendNotify(message);
+                received[i] = Substitute.For<Action>();
+                lost[i] = Substitute.For<Action>();
+                token.Delivered += received[i];
+                token.Lost += lost[i];
+            }
 
-        //        received[i] = Substitute.For<Action>();
-        //        lost[i] = Substitute.For<Action>();
-        //        token.Delivered += received[i];
-        //        token.Lost += lost[i];
-        //    }
+            var end = time.Now + NotifyWaitTime;
+            while (end > time.Now)
+            {
+                UpdateAll();
+                yield return null;
+            }
 
-        //    var end = UnityEngine.Time.time + NotifyWaitTime;
-        //    while (end > UnityEngine.Time.time)
-        //    {
-        //        UpdateAll();
-        //        yield return null;
-        //    }
+            for (var i = 0; i < ClientCount; i++)
+            {
+                received[i].Received(1).Invoke();
+                lost[i].DidNotReceive().Invoke();
+            }
+        }
 
-        //    for (var i = 0; i < ClientCount; i++)
-        //    {
-        //        received[i].Received(1).Invoke();
-        //        lost[i].DidNotReceive().Invoke();
-        //    }
-        //}
+        [Test]
+        public IEnumerator ClientNotifySendMarkedAsReceived()
+        {
+            Time time = new Time();
+            var message = Enumerable.Range(10, 20).Select(x => (byte)x).ToArray();
+            var received = new Action[ClientCount];
+            var lost = new Action[ClientCount];
+            // send 1 message from each client
+            for (var i = 0; i < ClientCount; i++)
+            {
+                var token = clientConnections[i].SendNotify(message);
 
-        //public IEnumerator ClientNotifySendMarkedAsReceived()
-        //{
-        //    var message = Enumerable.Range(10, 20).Select(x => (byte)x).ToArray();
+                received[i] = Substitute.For<Action>();
+                lost[i] = Substitute.For<Action>();
+                token.Delivered += received[i];
+                token.Lost += lost[i];
+            }
 
-        //    var received = new Action[ClientCount];
-        //    var lost = new Action[ClientCount];
-        //    // send 1 message from each client
-        //    for (var i = 0; i < ClientCount; i++)
-        //    {
-        //        var token = clientConnections[i].SendNotify(message);
+            var end = time.Now + NotifyWaitTime;
+            while (end > time.Now)
+            {
+                UpdateAll();
+                yield return null;
+            }
 
-        //        received[i] = Substitute.For<Action>();
-        //        lost[i] = Substitute.For<Action>();
-        //        token.Delivered += received[i];
-        //        token.Lost += lost[i];
-        //    }
+            for (var i = 0; i < ClientCount; i++)
+            {
+                received[i].Received(1).Invoke();
+                lost[i].DidNotReceive().Invoke();
+            }
+        }
 
-        //    var end = UnityEngine.Time.time + NotifyWaitTime;
-        //    while (end > UnityEngine.Time.time)
-        //    {
-        //        UpdateAll();
-        //        yield return null;
-        //    }
+        [Test]
+        public IEnumerator ServerNotifySendCallbacksMarkedAsReceived()
+        {
+            Time time = new Time();
+            var message = Enumerable.Range(10, 20).Select(x => (byte)x).ToArray();
+            var callBacks = new INotifyCallBack[ClientCount];
+            // send 1 message to each client
+            for (var i = 0; i < ClientCount; i++)
+            {
+                callBacks[i] = Substitute.For<INotifyCallBack>();
+                serverConnections[i].SendNotify(message, callBacks[i]);
+            }
 
-        //    for (var i = 0; i < ClientCount; i++)
-        //    {
-        //        received[i].Received(1).Invoke();
-        //        lost[i].DidNotReceive().Invoke();
-        //    }
-        //}
+            var end = time.Now + NotifyWaitTime;
+            while (end > time.Now)
+            {
+                UpdateAll();
+                yield return null;
+            }
 
-        //public IEnumerator ServerNotifySendCallbacksMarkedAsReceived()
-        //{
-        //    var message = Enumerable.Range(10, 20).Select(x => (byte)x).ToArray();
+            for (var i = 0; i < ClientCount; i++)
+            {
+                callBacks[i].Received(1).OnDelivered();
+                callBacks[i].DidNotReceive().OnLost();
+            }
+        }
 
-        //    var callBacks = new INotifyCallBack[ClientCount];
-        //    // send 1 message to each client
-        //    for (var i = 0; i < ClientCount; i++)
-        //    {
-        //        callBacks[i] = Substitute.For<INotifyCallBack>();
-        //        serverConnections[i].SendNotify(message, callBacks[i]);
-        //    }
+        [Test]
+        public IEnumerator ClientNotifySendCallbacksMarkedAsReceived()
+        {
+            Time time = new Time();
+            var message = Enumerable.Range(10, 20).Select(x => (byte)x).ToArray();
+            var callBacks = new INotifyCallBack[ClientCount];
+            // send 1 message from each client
+            for (var i = 0; i < ClientCount; i++)
+            {
+                callBacks[i] = Substitute.For<INotifyCallBack>();
+                clientConnections[i].SendNotify(message, callBacks[i]);
+            }
 
-        //    var end = UnityEngine.Time.time + NotifyWaitTime;
-        //    while (end > UnityEngine.Time.time)
-        //    {
-        //        UpdateAll();
-        //        yield return null;
-        //    }
+            var end = time.Now + NotifyWaitTime;
+            while (end > time.Now)
+            {
+                UpdateAll();
+                yield return null;
+            }
 
-        //    for (var i = 0; i < ClientCount; i++)
-        //    {
-        //        callBacks[i].Received(1).OnDelivered();
-        //        callBacks[i].DidNotReceive().OnLost();
-        //    }
-        //}
-
-        //public IEnumerator ClientNotifySendCallbacksMarkedAsReceived()
-        //{
-        //    var message = Enumerable.Range(10, 20).Select(x => (byte)x).ToArray();
-
-        //    var callBacks = new INotifyCallBack[ClientCount];
-        //    // send 1 message from each client
-        //    for (var i = 0; i < ClientCount; i++)
-        //    {
-        //        callBacks[i] = Substitute.For<INotifyCallBack>();
-        //        clientConnections[i].SendNotify(message, callBacks[i]);
-        //    }
-
-        //    var end = UnityEngine.Time.time + NotifyWaitTime;
-        //    while (end > UnityEngine.Time.time)
-        //    {
-        //        UpdateAll();
-        //        yield return null;
-        //    }
-
-        //    for (var i = 0; i < ClientCount; i++)
-        //    {
-        //        callBacks[i].Received(1).OnDelivered();
-        //        callBacks[i].DidNotReceive().OnLost();
-        //    }
-        //}
+            for (var i = 0; i < ClientCount; i++)
+            {
+                callBacks[i].Received(1).OnDelivered();
+                callBacks[i].DidNotReceive().OnLost();
+            }
+        }
 
         [Test]
         public void ServerReliableSend()

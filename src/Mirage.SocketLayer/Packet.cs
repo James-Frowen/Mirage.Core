@@ -6,7 +6,7 @@ namespace Mirage.SocketLayer
     /// Received packet
     /// <para>contains raw data and helper methods to help process that data</para>
     /// </summary>
-    internal struct Packet
+    public struct Packet
     {
         public readonly ByteBuffer Buffer;
         public readonly int Length;

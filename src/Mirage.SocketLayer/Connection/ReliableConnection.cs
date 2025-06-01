@@ -85,7 +85,7 @@ namespace Mirage.SocketLayer
             HandleReliableBatched(packet.Buffer.array, 1, packet.Length, PacketType.Unreliable);
         }
 
-        internal override void ReceiveReliablePacket(Packet packet)
+        public override void ReceiveReliablePacket(Packet packet)
         {
             _ackSystem.ReceiveReliable(packet.Buffer.array, packet.Length, false);
 
