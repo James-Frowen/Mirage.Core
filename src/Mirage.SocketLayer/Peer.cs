@@ -7,13 +7,13 @@ namespace Mirage.SocketLayer
 {
     public interface ITime
     {
-        public float Now { get; }
+        public double Now { get; }
     }
     public class Time : ITime
     {
         private Stopwatch _stopwatch = Stopwatch.StartNew();
 
-        public float Now => _stopwatch.ElapsedMilliseconds / 1000f;
+        public double Now => _stopwatch.ElapsedMilliseconds / 1000f;
     }
 
     public interface IPeer
