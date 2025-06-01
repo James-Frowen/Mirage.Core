@@ -56,12 +56,12 @@ namespace Mirage.CodeGen
 
         public static TypeDefinition GeneratedClass(this ModuleDefinition module)
         {
-            var type = module.GetType("Mirage", "GeneratedNetworkCode");
+            var type = module.GetType(GeneratedCode.GENERATED_NAMEPACE, GeneratedCode.GENERATED_CLASS);
 
             if (type != null)
                 return type;
 
-            type = new TypeDefinition("Mirage", "GeneratedNetworkCode",
+            type = new TypeDefinition(GeneratedCode.GENERATED_NAMEPACE, GeneratedCode.GENERATED_CLASS,
                         TypeAttributes.BeforeFieldInit | TypeAttributes.Class | TypeAttributes.AnsiClass | TypeAttributes.Public | TypeAttributes.AutoClass | TypeAttributes.Abstract | TypeAttributes.Sealed,
                         module.ImportReference<object>());
             module.Types.Add(type);

@@ -72,6 +72,25 @@ namespace Mirage.Logging
         }
 
         /// <summary>
+        /// Replacing log handlers for loggers, with the option to replace for exisitng or just new loggers
+        /// </summary>
+        /// <param name="logHandler"></param>
+        public static void SetDefaultLogLevel(LogType type, bool replaceExisting = true)
+        {
+            DefaultLogLevel = type;
+
+            if (replaceExisting)
+            {
+                foreach (var kvp in _loggers)
+                {
+                    var logger = kvp.Value;
+                    var key = kvp.Key;
+                    logger.filterLogType = type;
+                }
+            }
+        }
+        
+        /// <summary>
         /// Replaceing log handlers for loggers, allows for unique log handlers for each type
         /// <para>this can be used to add labels or other processing before logging the result</para>
         /// </summary>
