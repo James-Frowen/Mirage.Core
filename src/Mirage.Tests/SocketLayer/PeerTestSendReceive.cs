@@ -149,7 +149,7 @@ namespace Mirage.SocketLayer.Tests.PeerTests
         }
 
         [Test]
-        public IEnumerator ServerNotifySendMarkedAsReceived()
+        public async Task ServerNotifySendMarkedAsReceived()
         {
             Time time = new Time();
             var message = Enumerable.Range(10, 20).Select(x => (byte)x).ToArray();
@@ -170,7 +170,7 @@ namespace Mirage.SocketLayer.Tests.PeerTests
             while (end > time.Now)
             {
                 UpdateAll();
-                yield return null;
+                await Task.Delay(1);
             }
 
             for (var i = 0; i < ClientCount; i++)
@@ -181,7 +181,7 @@ namespace Mirage.SocketLayer.Tests.PeerTests
         }
 
         [Test]
-        public IEnumerator ClientNotifySendMarkedAsReceived()
+        public async Task ClientNotifySendMarkedAsReceived()
         {
             Time time = new Time();
             var message = Enumerable.Range(10, 20).Select(x => (byte)x).ToArray();
@@ -202,7 +202,7 @@ namespace Mirage.SocketLayer.Tests.PeerTests
             while (end > time.Now)
             {
                 UpdateAll();
-                yield return null;
+                await Task.Delay(1);
             }
 
             for (var i = 0; i < ClientCount; i++)
@@ -213,7 +213,7 @@ namespace Mirage.SocketLayer.Tests.PeerTests
         }
 
         [Test]
-        public IEnumerator ServerNotifySendCallbacksMarkedAsReceived()
+        public async Task ServerNotifySendCallbacksMarkedAsReceived()
         {
             Time time = new Time();
             var message = Enumerable.Range(10, 20).Select(x => (byte)x).ToArray();
@@ -229,7 +229,7 @@ namespace Mirage.SocketLayer.Tests.PeerTests
             while (end > time.Now)
             {
                 UpdateAll();
-                yield return null;
+                await Task.Delay(1);
             }
 
             for (var i = 0; i < ClientCount; i++)
@@ -240,7 +240,7 @@ namespace Mirage.SocketLayer.Tests.PeerTests
         }
 
         [Test]
-        public IEnumerator ClientNotifySendCallbacksMarkedAsReceived()
+        public async Task ClientNotifySendCallbacksMarkedAsReceived()
         {
             Time time = new Time();
             var message = Enumerable.Range(10, 20).Select(x => (byte)x).ToArray();
@@ -256,7 +256,7 @@ namespace Mirage.SocketLayer.Tests.PeerTests
             while (end > time.Now)
             {
                 UpdateAll();
-                yield return null;
+                await Task.Delay(1);
             }
 
             for (var i = 0; i < ClientCount; i++)
