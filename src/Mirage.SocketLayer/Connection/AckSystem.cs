@@ -134,7 +134,6 @@ namespace Mirage.SocketLayer
             });
         }
 
-
         /// <summary>
         /// Gets next Reliable packet in order, packet consists for multiple messsages
         /// <para>[length, message, length, message, ...]</para>

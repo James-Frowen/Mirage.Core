@@ -89,7 +89,7 @@ namespace Mirage.Logging
                 }
             }
         }
-        
+
         /// <summary>
         /// Replaceing log handlers for loggers, allows for unique log handlers for each type
         /// <para>this can be used to add labels or other processing before logging the result</para>
