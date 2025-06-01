@@ -8,11 +8,6 @@ namespace Mirage.SocketLayer.Tests.AckSystemTests
     [Category("SocketLayer")]
     public class AckSystemTest_Reliable : AckSystemTestBase
     {
-        private class Time : ITime
-        {
-            public float Now { get; set; }
-        }
-
         private class BadSocket
         {
             private readonly AckSystem ackSystem1;
@@ -120,7 +115,7 @@ namespace Mirage.SocketLayer.Tests.AckSystemTests
         private const float tick = 0.02f;
         private float timeout;
         private BadSocket badSocket;
-        private Time time;
+        private Time time = new Time();
         private AckTestInstance instance1;
         private AckTestInstance instance2;
         private List<byte[]> receives1;
@@ -251,7 +246,6 @@ namespace Mirage.SocketLayer.Tests.AckSystemTests
 
         private void Tick(float dropChance, float skipChance)
         {
-            time.Now += tick;
             instance1.ackSystem.Update();
             instance2.ackSystem.Update();
             var newMessages = badSocket.Update(dropChance, skipChance);

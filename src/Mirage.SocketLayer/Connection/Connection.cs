@@ -4,7 +4,7 @@ using Mirage.SocketLayer.ConnectionTrackers;
 
 namespace Mirage.SocketLayer
 {
-    internal abstract class Connection : IConnection
+    public abstract class Connection : IConnection
     {
         protected readonly ILogger _logger;
         protected readonly int _maxPacketSize;
@@ -13,10 +13,10 @@ namespace Mirage.SocketLayer
 
         public readonly IEndPoint EndPoint;
 
-        protected readonly ConnectingTracker _connectingTracker;
-        protected readonly TimeoutTracker _timeoutTracker;
-        protected readonly KeepAliveTracker _keepAliveTracker;
-        protected readonly DisconnectedTracker _disconnectedTracker;
+        public readonly ConnectingTracker _connectingTracker;
+        public readonly TimeoutTracker _timeoutTracker;
+        public readonly KeepAliveTracker _keepAliveTracker;
+        public readonly DisconnectedTracker _disconnectedTracker;
 
         protected readonly Metrics _metrics;
 
@@ -113,7 +113,7 @@ namespace Mirage.SocketLayer
         {
             // sending to Connecting is also valid
             if (_state != ConnectionState.Connected && _state != ConnectionState.Connecting)
-                throw new InvalidOperationException("Connection is not connected");
+                throw new NoConnectionException($"Connection is not connected, ConnectionState: {_state}");
         }
 
 
@@ -122,9 +122,16 @@ namespace Mirage.SocketLayer
         /// </summary>
         public void Disconnect()
         {
-            Disconnect(DisconnectReason.RequestedByLocalPeer);
+            DisconnectInternal(DisconnectReason.RequestedByLocalPeer);
         }
-        internal void Disconnect(DisconnectReason reason, bool sendToOther = true)
+        /// <summary>
+        /// starts disconnecting this connection
+        /// </summary>
+        public void Disconnect(DisconnectReason reason)
+        {
+            DisconnectInternal(reason);
+        }
+        internal void DisconnectInternal(DisconnectReason reason, bool sendToOther = true)
         {
             if (_logger.Enabled(LogType.Log)) _logger.Log($"Disconnect with reason: {reason}");
             switch (State)
@@ -181,10 +188,20 @@ namespace Mirage.SocketLayer
         {
             if (_timeoutTracker.TimeToDisconnect())
             {
-                Disconnect(DisconnectReason.Timeout);
+                DisconnectInternal(DisconnectReason.Timeout);
+                return;
             }
 
-            FlushBatch();
+            try
+            {
+                FlushBatch();
+            }
+            catch (BufferFullException e)
+            {
+                _logger?.LogException(e);
+                DisconnectInternal(DisconnectReason.SendBufferFull);
+                return;
+            }
 
             if (_keepAliveTracker.TimeToSend())
             {
@@ -205,15 +222,22 @@ namespace Mirage.SocketLayer
         internal abstract void ReceiveNotifyAck(Packet packet);
         internal abstract void ReceiveReliableFragment(Packet packet);
 
-        protected void HandleReliableBatched(byte[] array, int offset, int packetLength)
+        protected void HandleReliableBatched(byte[] array, int offset, int packetLength, PacketType packetType)
         {
             while (offset < packetLength)
             {
+                // Check if connection is still valid before processing next message
+                if (State != ConnectionState.Connected)
+                {
+                    if (_logger.Enabled(LogType.Warning)) _logger.Warn("Connection not connected, stopping message processing");
+                    return;
+                }
+
                 var length = ByteUtils.ReadUShort(array, ref offset);
                 var message = new ArraySegment<byte>(array, offset, length);
                 offset += length;
 
-                _metrics?.OnReceiveMessageReliable(length);
+                _metrics?.OnReceiveMessage(packetType, length);
                 _dataHandler.ReceiveMessage(this, message);
             }
         }

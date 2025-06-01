@@ -7,7 +7,7 @@ namespace Mirage.SocketLayer
 {
     public interface ITime
     {
-        float Now { get; }
+        public float Now { get; }
     }
     public class Time : ITime
     {
@@ -117,7 +117,7 @@ namespace Mirage.SocketLayer
             // send disconnect messages
             foreach (var conn in _connections.Values)
             {
-                conn.Disconnect(DisconnectReason.RequestedByLocalPeer);
+                conn.DisconnectInternal(DisconnectReason.RequestedByLocalPeer);
             }
             RemoveConnections();
 
@@ -235,9 +235,15 @@ namespace Mirage.SocketLayer
         {
             using (var buffer = _bufferPool.Take())
             {
-                while (_socket.Poll())
+                // check active, because socket might have been closed by message handler
+                while (_active && _socket.Poll())
                 {
                     var length = _socket.Receive(buffer.array, out var receiveEndPoint);
+                    if (length < 0 && _logger.Enabled(LogType.Warning))
+                    {
+                        _logger.Warn($"Receive returned less than 0 bytes, length={length}");
+                        continue;
+                    }
 
                     // this should never happen. buffer size is only MTU, if socket returns higher length then it has a bug.
                     if (length > _maxPacketSize)
@@ -367,10 +373,16 @@ namespace Mirage.SocketLayer
 
             if (AtMaxConnections())
             {
+                if (_logger.Enabled(LogType.Warning))
+                    _logger.Log(LogType.Warning, $"Reject Connection: At max connections");
+
                 RejectConnectionWithReason(endPoint, RejectReason.ServerFull);
             }
             else if (!_connectKeyValidator.Validate(packet.Buffer.array, packet.Length))
             {
+                if (_logger.Enabled(LogType.Warning))
+                    _logger.Log(LogType.Warning, $"Reject Connection: Invalid key");
+
                 RejectConnectionWithReason(endPoint, RejectReason.KeyInvalid);
             }
             // todo do other security stuff here:
@@ -540,7 +552,7 @@ namespace Mirage.SocketLayer
             else
                 reason = DisconnectReason.None;
 
-            connection.Disconnect(reason, false);
+            connection.DisconnectInternal(reason, false);
         }
 
         private void UpdateConnections()

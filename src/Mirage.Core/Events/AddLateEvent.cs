@@ -64,9 +64,11 @@ namespace Mirage.Events
     /// }
     /// </code>
     /// </example>
-    public sealed class AddLateEvent : AddLateEventBase, IAddLateEvent
+    [Serializable]
+    public class AddLateEvent : AddLateEventBase, IAddLateEvent
     {
-        public List<Action> _event = new List<Action>();
+        private readonly List<Action> tmp = new List<Action>();
+        private readonly List<Action> _listeners = new List<Action>();
 
         public void AddListener(Action handler)
         {
@@ -77,33 +79,47 @@ namespace Mirage.Events
             }
 
             // add handler to inner event so that it can be invoked again
-            _event.Add(handler);
+            _listeners.Add(handler);
         }
-
         public void RemoveListener(Action handler)
         {
-            _event.Remove(handler);
+            _listeners.Remove(handler);
         }
 
-        public void Invoke()
+        public virtual void Invoke()
         {
             MarkInvoked();
 
-            foreach (var handler in _event)
+            // tmp incase RemoveListener is called inside loop
+            tmp.Clear();
+            tmp.AddRange(_listeners);
+            foreach (var handler in tmp)
                 handler.Invoke();
+            tmp.Clear();
+        }
+
+        /// <summary>
+        /// Clears listeners, should be called from OnDestroy
+        /// </summary>
+        public void OnDestroyCleanup()
+        {
+            _listeners.Clear();
         }
     }
 
     /// <summary>
     /// Version of <see cref="AddLateEvent"/> with 1 argument
+    /// <para>Create a non-generic class inheriting from this to use in inspector. Same rules as <see cref="UnityEvent"/></para>
     /// </summary>
     /// <typeparam name="T0">argument 0</typeparam>
     /// <typeparam name="TEvent">UnityEvent</typeparam>
+    [Serializable]
     public class AddLateEvent<T0> : AddLateEventBase, IAddLateEvent<T0>
     {
-        public List<Action<T0>> _event = new List<Action<T0>>();
+        private readonly List<Action<T0>> tmp = new List<Action<T0>>();
+        private readonly List<Action<T0>> _listeners = new List<Action<T0>>();
 
-        private T0 _arg0;
+        protected T0 _arg0;
 
         public void AddListener(Action<T0> handler)
         {
@@ -114,35 +130,50 @@ namespace Mirage.Events
             }
 
             // add handler to inner event so that it can be invoked again
-            _event.Add(handler);
+            _listeners.Add(handler);
         }
 
         public void RemoveListener(Action<T0> handler)
         {
-            _event.Remove(handler);
+            _listeners.Remove(handler);
         }
 
-        public void Invoke(T0 arg0)
+        public virtual void Invoke(T0 arg0)
         {
             MarkInvoked();
 
             _arg0 = arg0;
-            foreach (var handler in _event)
+            // tmp incase RemoveListener is called inside loop
+            tmp.Clear();
+            tmp.AddRange(_listeners);
+            foreach (var handler in tmp)
                 handler.Invoke(arg0);
+            tmp.Clear();
+        }
+
+        /// <summary>
+        /// Clears listeners, should be called from OnDestroy
+        /// </summary>
+        public void OnDestroyCleanup()
+        {
+            _listeners.Clear();
         }
     }
 
     /// <summary>
     /// Version of <see cref="AddLateEvent"/> with 2 arguments
+    /// <para>Create a non-generic class inheriting from this to use in inspector. Same rules as <see cref="UnityEvent"/></para>
     /// </summary>
     /// <typeparam name="T0"></typeparam>
     /// <typeparam name="T1"></typeparam>
+    [Serializable]
     public class AddLateEvent<T0, T1> : AddLateEventBase, IAddLateEvent<T0, T1>
     {
-        public List<Action<T0, T1>> _event = new List<Action<T0, T1>>();
+        private readonly List<Action<T0, T1>> tmp = new List<Action<T0, T1>>();
+        private readonly List<Action<T0, T1>> _listeners = new List<Action<T0, T1>>();
 
-        private T0 _arg0;
-        private T1 _arg1;
+        protected T0 _arg0;
+        protected T1 _arg1;
 
         public void AddListener(Action<T0, T1> handler)
         {
@@ -153,22 +184,34 @@ namespace Mirage.Events
             }
 
             // add handler to inner event so that it can be invoked again
-            _event.Add(handler);
+            _listeners.Add(handler);
         }
 
         public void RemoveListener(Action<T0, T1> handler)
         {
-            _event.Remove(handler);
+            _listeners.Remove(handler);
         }
 
-        public void Invoke(T0 arg0, T1 arg1)
+        public virtual void Invoke(T0 arg0, T1 arg1)
         {
             MarkInvoked();
 
             _arg0 = arg0;
             _arg1 = arg1;
-            foreach (var handler in _event)
+            // tmp incase RemoveListener is called inside loop
+            tmp.Clear();
+            tmp.AddRange(_listeners);
+            foreach (var handler in tmp)
                 handler.Invoke(arg0, arg1);
+            tmp.Clear();
+        }
+
+        /// <summary>
+        /// Clears listeners, should be called from OnDestroy
+        /// </summary>
+        public void OnDestroyCleanup()
+        {
+            _listeners.Clear();
         }
     }
 }

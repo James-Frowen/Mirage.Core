@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Mirage.CodeGen;
 using Mono.Cecil;
 using Unity.CompilationPipeline.Common.ILPostProcessing;
