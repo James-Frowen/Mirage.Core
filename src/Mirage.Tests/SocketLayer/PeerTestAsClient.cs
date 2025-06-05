@@ -33,10 +33,10 @@ namespace Mirage.SocketLayer.Tests.PeerTests
 
             var endPoint = TestEndPoint.CreateSubstitute();
             var conn = peer.Connect(endPoint);
-            //if (disableReliable)
-            //    Assert.That(conn, Is.TypeOf<NoReliableConnection>(), "returned type should be connection");
-            //else
-            //    Assert.That(conn, Is.TypeOf<ReliableConnection>(), "returned type should be connection");
+            if (disableReliable)
+                Assert.That(conn, Is.TypeOf<NoReliableConnection>(), "returned type should be connection");
+            else
+                Assert.That(conn, Is.TypeOf<ReliableConnection>(), "returned type should be connection");
 
             Assert.That(conn.State, Is.EqualTo(ConnectionState.Connecting), "new connection should be connecting");
         }
@@ -58,7 +58,7 @@ namespace Mirage.SocketLayer.Tests.PeerTests
             // make sure to call update so events are invoked
             // 0.5 little extra to be sure
             var end = time.Now + (config.MaxConnectAttempts * config.ConnectAttemptInterval) + 0.5f;
-            float nextSendCheck = 0;
+            double nextSendCheck = 0;
             var sendCount = 0;
             while (end > time.Now)
             {

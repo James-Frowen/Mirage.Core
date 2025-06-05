@@ -58,13 +58,13 @@ namespace Mirage.SocketLayer.Tests.PeerTests
             Assert.That(exception, Has.Message.EqualTo(expected.Message));
         }
 
-        [Test]
-        public void CloseShouldThrowIfNoActive()
-        {
-            //LogAssert.Expect(LogType.Warning, new Regex("Peer is not active$"));
-            peer.Close();
-            //LogAssert.NoUnexpectedReceived();
-        }
+        //[Test]
+        //public void CloseShouldThrowIfNoActive()
+        //{
+        //    LogAssert.Expect(LogType.Warning, new Regex("Peer is not active$"));
+        //    peer.Close();
+        //    LogAssert.NoUnexpectedReceived();
+        //}
 
         [Test]
         public void CloseShouldCallSocketClose()

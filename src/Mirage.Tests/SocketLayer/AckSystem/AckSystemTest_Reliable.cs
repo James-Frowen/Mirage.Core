@@ -10,7 +10,7 @@ namespace Mirage.SocketLayer.Tests.AckSystemTests
     {
         private class Time : ITime
         {
-            public float Now { get; set; }
+            public double Now { get; set; }
         }
 
         private class BadSocket

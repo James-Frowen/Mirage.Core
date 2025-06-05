@@ -34,8 +34,10 @@ echo
 echo "Applying Mirage.Core/Events changes..."
 CopyScripts "$MiragePath/Assets/Mirage/Runtime/Events" "./src/Mirage.Core/Events"
 rm "./src/Mirage.Core/Events/AddLateEvent_new.cs"
+rm "./src/Mirage.Core/Events/AddLateEventUnity.cs"
 rm "./src/Mirage.Core/Events/BoolAddLateEvent.cs"
 rm "./src/Mirage.Core/Events/DisconnectAddLateEvent.cs"
+rm "./src/Mirage.Core/Events/IAddLateEventUnity.cs"
 rm "./src/Mirage.Core/Events/NetworkPlayerAddLateEvent.cs"
 
 echo
