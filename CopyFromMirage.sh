@@ -6,7 +6,6 @@ else
   MiragePath=$1
   echo "Copying Mirage Updates to Mirage.Core"
   echo "Mirage Path:  $MiragePath"
-  
 fi 
 
 CopyScripts () {
